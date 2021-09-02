@@ -18,8 +18,5 @@ var _ types.MsgServiceServer = msgServer{}
 
 func (ms msgServer) MsgClaimRewards(context context.Context, msg *types.MsgCreateCDPRequest) (*types.MsgCreateCDPResponse, error) {
 	//ctx := sdk.UnwrapSDKContext(context)
-	nil, nil
+	return nil, nil
 }
-
-
-
