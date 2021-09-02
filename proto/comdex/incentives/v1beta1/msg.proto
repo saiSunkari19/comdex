@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package comdex.incentives.v1beta1;
+
+option go_package = "github.com/comdex-official/comdex/x/incentives/types";
+
+service MsgService {
+  rpc MsgClaimRewards(MsgClaimRewardsRequest) returns (MsgClaimRewardsResponse);
+}
+
+message MsgClaimRewardsRequest{
+
+}
+
+message MsgClaimRewardsResponse{
+
+}

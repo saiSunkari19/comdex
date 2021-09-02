@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package comdex.incentives.v1beta1;
+
+option go_package = "github.com/comdex-official/comdex/x/incentives/types";
+
+service QueryService {
+  rpc QueryClaimableRewards(QueryClaimableRewardsRequest) returns (QueryClaimableRewardsResponse);
+}
+
+message QueryClaimableRewardsRequest{
+
+}
+
+message QueryClaimableRewardsResponse{
+
+}
