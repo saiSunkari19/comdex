@@ -10,17 +10,19 @@ import (
 	"github.com/comdex-official/comdex/x/cdp/types"
 )
 
-type Keeper struct {
-	cdc           codec.BinaryMarshaler
-	storeKey      sdk.StoreKey
-	memKey        sdk.StoreKey
-	accountKeeper types.AccountKeeper
-	bankKeeper    types.BankKeeper
-	paramSpace    types.ParamSubspace
-}
+type (
+	Keeper struct {
+		cdc           codec.BinaryCodec
+		storeKey      sdk.StoreKey
+		memKey        sdk.StoreKey
+		accountKeeper types.AccountKeeper
+		bankKeeper    types.BankKeeper
+		paramSpace    types.ParamSubspace
+	}
+)
 
 func NewKeeper(
-	cdc codec.BinaryMarshaler,
+	cdc codec.BinaryCodec,
 	storeKey,
 	memKey sdk.StoreKey,
 	accountKeeper types.AccountKeeper,
