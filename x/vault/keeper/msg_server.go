@@ -92,9 +92,6 @@ func (k *msgServer) MsgDeposit(c context.Context, msg *types.MsgDepositRequest) 
 	if !found {
 		return nil, types.ErrorVaultDoesNotExist
 	}
-	if msg.From != vault.Owner {
-		return nil, types.ErrorUnauthorized
-	}
 
 	pair, found := k.GetPair(ctx, vault.PairID)
 	if !found {
@@ -115,7 +112,22 @@ func (k *msgServer) MsgDeposit(c context.Context, msg *types.MsgDepositRequest) 
 		return nil, err
 	}
 
+	deposit, found := k.GetDeposit(ctx, msg.ID, from)
+
+	if !found {
+		deposit = types.Deposit{
+			VaultID:         vault.ID,
+			Depositor:       msg.From,
+			AmountDeposited: msg.Amount,
+		}
+	} else {
+		deposit.AmountDeposited = deposit.AmountDeposited.Add(msg.Amount)
+
+	}
+
 	k.SetVault(ctx, vault)
+	k.SetDeposit(ctx, deposit)
+
 	return &types.MsgDepositResponse{}, nil
 }
 
@@ -305,7 +317,6 @@ func (k *msgServer) MsgClose(c context.Context, msg *types.MsgCloseRequest) (*ty
 	if err != nil {
 		return nil, err
 	}
-
 
 	if err := k.SendCoinFromModuleToModule(ctx, types.ModuleName, "liquidate", nil); err != nil {
 		return nil, err

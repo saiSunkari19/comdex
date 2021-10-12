@@ -27,7 +27,7 @@ func (k Keeper) SetDeposit(ctx sdk.Context, deposit types.Deposit) {
 	var (
 		store = k.Store(ctx)
 		key   = types.DepositKey(deposit.VaultID, sdk.AccAddress(deposit.Depositor))
-		value = store.Get(key)
+		value = k.cdc.MustMarshal(&deposit)
 	)
 
 	store.Set(key, value)

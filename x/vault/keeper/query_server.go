@@ -20,8 +20,44 @@ type queryServer struct {
 	Keeper
 }
 
-func (q *queryServer) QueryDeposits(ctx context.Context, request *types.QueryDepositsRequest) (*types.QueryDepositsResponse, error) {
-	panic("implement me")
+func (q *queryServer) QueryDeposits(c context.Context, request *types.QueryDepositsRequest) (*types.QueryDepositsResponse, error) {
+
+	var (
+		items []types.Deposit
+		ctx   = sdk.UnwrapSDKContext(c)
+	)
+
+	pagination, err := query.FilteredPaginate(
+		prefix.NewStore(q.Store(ctx), types.DepositKeyPrefix),
+		request.Pagination,
+		func(_, value []byte, accumulate bool) (bool, error) {
+			var item types.Deposit
+			if err := q.cdc.Unmarshal(value, &item); err != nil {
+				return false, err
+			}
+
+			deposit := types.Deposit{
+				VaultID:         item.VaultID,
+				Depositor:       item.Depositor,
+				AmountDeposited: item.AmountDeposited,
+			}
+
+			if accumulate {
+				items = append(items, deposit)
+			}
+
+			return true, nil
+		},
+	)
+
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &types.QueryDepositsResponse{
+		Deposits: items,
+		Pagination: pagination,
+	}, nil
 }
 
 func NewQueryServiceServer(k Keeper) types.QueryServiceServer {

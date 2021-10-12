@@ -1,7 +1,6 @@
 package types
 
 import (
-	"encoding/binary"
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -46,13 +45,7 @@ func VaultForAddressByPair(address sdk.AccAddress, pairID uint64) []byte {
 }
 
 func DepositKey(vaultID uint64, depositor sdk.AccAddress) []byte {
-	return generateKey(DepositKeyPrefix, VaultIDBytes(vaultID), splitter, depositor)
-}
-
-func VaultIDBytes(vaultID uint64) (vaultIDBz []byte) {
-	vaultIDBz = make([]byte, 16)
-	binary.BigEndian.PutUint64(vaultIDBz, vaultID)
-	return
+	return generateKey(DepositKeyPrefix, sdk.Uint64ToBigEndian(vaultID), splitter, depositor)
 }
 
 func generateKey(bytes ...[]byte) (r []byte) {

@@ -26,7 +26,7 @@ message Deposits{
 
     repeated Deposit deposits = 1 [
     (gogoproto.customname) = "Deposits",
-    (gogoproto.moretags)   = "yaml:\"deposits\"",
+    (gogoproto.moretags)   = "yaml:\"Deposits\"",
     (gogoproto.nullable)   = false
     ];
 

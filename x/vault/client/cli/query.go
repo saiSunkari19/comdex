@@ -101,9 +101,9 @@ func QueryVaults() *cobra.Command {
 
 func QueryDeposits() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "deposits [vaultID]",
+		Use:   "deposits [vaultID][depositor]",
 		Short: "deposits list for a vault",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 
 			pagination, err := client.ReadPageRequest(cmd.Flags())
@@ -125,6 +125,7 @@ func QueryDeposits() *cobra.Command {
 
 			res, err := queryClient.QueryDeposits(cmd.Context(), &types.QueryDepositsRequest{
 				VaultID:    vaultID,
+				Depositor:  args[1],
 				Pagination: pagination,
 			})
 

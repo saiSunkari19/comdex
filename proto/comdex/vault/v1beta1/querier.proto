@@ -67,19 +67,20 @@ message QueryVaultsResponse {
 message QueryDepositsRequest {
 
   uint64 vaultID = 1 [ (gogoproto.moretags) = "yaml:\"vaultID\"" ];
+  string depositor = 2 [ (gogoproto.moretags) = "yaml:\"depositor\"" ];
 
-  cosmos.base.query.v1beta1.PageRequest pagination = 2
+  cosmos.base.query.v1beta1.PageRequest pagination = 3
   [ (gogoproto.moretags) = "yaml:\"pagination\"" ];
 }
 
 message QueryDepositsResponse {
-  Deposits deposits = 1 [
-  (gogoproto.customname) = "deposits",
+  repeated Deposit deposits = 1 [
+  (gogoproto.customname) = "Deposits",
   (gogoproto.moretags)   = "yaml:\"deposits\"",
   (gogoproto.nullable)   = false
   ];
 
-  cosmos.base.query.v1beta1.PageRequest pagination = 2
+  cosmos.base.query.v1beta1.PageResponse pagination = 2
   [ (gogoproto.moretags) = "yaml:\"pagination\"" ];
 }
 
