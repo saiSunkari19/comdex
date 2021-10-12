@@ -5,6 +5,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/v1beta1/coin.proto";
+import "comdex/vault/v1beta1/deposit.proto";
 
 option go_package            = "github.com/comdex-official/comdex/x/vault/types";
 option (gogoproto.equal_all) = false;
@@ -63,6 +64,25 @@ message QueryVaultsResponse {
       [ (gogoproto.moretags) = "yaml:\"pagination\"" ];
 }
 
+message QueryDepositsRequest {
+
+  uint64 vaultID = 1 [ (gogoproto.moretags) = "yaml:\"vaultID\"" ];
+
+  cosmos.base.query.v1beta1.PageRequest pagination = 2
+  [ (gogoproto.moretags) = "yaml:\"pagination\"" ];
+}
+
+message QueryDepositsResponse {
+  Deposits deposits = 1 [
+  (gogoproto.customname) = "deposits",
+  (gogoproto.moretags)   = "yaml:\"deposits\"",
+  (gogoproto.nullable)   = false
+  ];
+
+  cosmos.base.query.v1beta1.PageRequest pagination = 2
+  [ (gogoproto.moretags) = "yaml:\"pagination\"" ];
+}
+
 service QueryService {
   rpc QueryVault(QueryVaultRequest) returns (QueryVaultResponse) {
     option (google.api.http).get = "/comdex/vault/v1beta1/vaults/{id}";
@@ -71,4 +91,9 @@ service QueryService {
   rpc QueryVaults(QueryVaultsRequest) returns (QueryVaultsResponse) {
     option (google.api.http).get = "/comdex/vault/v1beta1/vaults/{owner}";
   };
+
+  rpc QueryDeposits(QueryDepositsRequest) returns (QueryDepositsResponse) {
+    option (google.api.http).get = "/comdex/vault/v1beta1/deposits/{vaultID}";
+  };
+
 }

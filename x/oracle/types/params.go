@@ -3,7 +3,6 @@ package types
 import (
 	"fmt"
 
-	"github.com/cosmos/cosmos-sdk/types/errors"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
 )
 
@@ -78,6 +77,10 @@ func (m *OracleParams) Validate() error {
 	}
 	if m.MinCount == 0 {
 		return fmt.Errorf("min_count cannot be zero")
+	}
+
+	if m.Multiplier == 0 {
+		return fmt.Errorf("multiplier cannot be zero")
 	}
 
 	return nil
@@ -181,8 +184,11 @@ func (m *Params) ParamSetPairs() paramstypes.ParamSetPairs {
 func (m *Params) Validate() error {
 
 	if err := m.IBC.Validate(); err != nil {
-		return errors.Wrapf(err, "invalid ibc params")
+		return fmt.Errorf("invalid ibc params")
 	}
 
+	if err := m.Oracle.Validate(); err != nil {
+		return fmt.Errorf("invalid oracle params")
+	}
 	return nil
 }

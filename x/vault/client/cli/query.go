@@ -24,6 +24,7 @@ func GetQueryCmd() *cobra.Command {
 	cmd.AddCommand(
 		QueryVault(),
 		QueryVaults(),
+		QueryDeposits(),
 	)
 
 	return cmd
@@ -84,6 +85,46 @@ func QueryVaults() *cobra.Command {
 
 			res, err := queryClient.QueryVaults(cmd.Context(), &types.QueryVaultsRequest{
 				Owner:      args[0],
+				Pagination: pagination,
+			})
+
+			if err != nil {
+				return err
+			}
+			return ctx.PrintProto(res)
+		},
+	}
+
+	flags.AddQueryFlagsToCmd(cmd)
+	return cmd
+}
+
+func QueryDeposits() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "deposits [vaultID]",
+		Short: "deposits list for a vault",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+
+			pagination, err := client.ReadPageRequest(cmd.Flags())
+			if err != nil {
+				return err
+			}
+
+			vaultID, err := strconv.ParseUint(args[0], 10, 64)
+			if err != nil {
+				return err
+			}
+
+			ctx, err := client.GetClientQueryContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			queryClient := types.NewQueryServiceClient(ctx)
+
+			res, err := queryClient.QueryDeposits(cmd.Context(), &types.QueryDepositsRequest{
+				VaultID:    vaultID,
 				Pagination: pagination,
 			})
 

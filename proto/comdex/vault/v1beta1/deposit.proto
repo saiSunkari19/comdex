@@ -1,0 +1,35 @@
+syntax = "proto3";
+package comdex.vault.v1beta1;
+
+import "gogoproto/gogo.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+
+option go_package            = "github.com/comdex-official/comdex/x/vault/types";
+option (gogoproto.equal_all) = false;
+option (gogoproto.goproto_getters_all) = false;
+
+message Deposit{
+
+    uint64 vaultID = 1
+    [ (gogoproto.customname) = "VaultID", (gogoproto.moretags) = "yaml:\"VaultID\"" ];
+
+    string depositor     = 2 [ (gogoproto.moretags) = "yaml:\"depositor\"" ];
+
+    string amount_deposited = 3 [
+        (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+        (gogoproto.moretags)   = "yaml:\"amount_deposited\"",
+        (gogoproto.nullable)   = false
+    ];
+}
+
+message Deposits{
+
+    repeated Deposit deposits = 1 [
+    (gogoproto.customname) = "Deposits",
+    (gogoproto.moretags)   = "yaml:\"deposits\"",
+    (gogoproto.nullable)   = false
+    ];
+
+    cosmos.base.query.v1beta1.PageResponse pagination = 2
+    [ (gogoproto.moretags) = "yaml:\"pagination\"" ];
+}

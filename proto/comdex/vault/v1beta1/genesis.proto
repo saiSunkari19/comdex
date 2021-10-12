@@ -3,6 +3,7 @@ package comdex.vault.v1beta1;
 
 import "gogoproto/gogo.proto";
 import "comdex/vault/v1beta1/vault.proto";
+import "comdex/vault/v1beta1/deposit.proto";
 
 option go_package            = "github.com/comdex-official/comdex/x/vault/types";
 option (gogoproto.equal_all) = false;
@@ -12,6 +13,12 @@ message GenesisState {
   repeated Vault vaults = 1 [
     (gogoproto.customname) = "Vaults",
     (gogoproto.moretags)   = "yaml:\"vaults\"",
+    (gogoproto.nullable)   = false
+  ];
+
+  Deposits deposits = 2 [
+    (gogoproto.customname) = "Deposits",
+    (gogoproto.moretags)   = "yaml:\"Deposits\"",
     (gogoproto.nullable)   = false
   ];
 }

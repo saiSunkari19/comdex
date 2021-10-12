@@ -20,6 +20,10 @@ type queryServer struct {
 	Keeper
 }
 
+func (q *queryServer) QueryDeposits(ctx context.Context, request *types.QueryDepositsRequest) (*types.QueryDepositsResponse, error) {
+	panic("implement me")
+}
+
 func NewQueryServiceServer(k Keeper) types.QueryServiceServer {
 	return &queryServer{
 		Keeper: k,
@@ -66,11 +70,11 @@ func (q *queryServer) QueryVaults(c context.Context, req *types.QueryVaultsReque
 			}
 
 			vaultInfo := types.VaultInfo{
-				Id:                    item.ID,
-				PairID:                item.PairID,
-				Owner:                 item.Owner,
-				Collateral:            sdk.NewCoin(assetIn.Denom, item.AmountIn),
-				Debt:                  sdk.NewCoin(assetOut.Denom, item.AmountOut),
+				Id:                     item.ID,
+				PairID:                 item.PairID,
+				Owner:                  item.Owner,
+				Collateral:             sdk.NewCoin(assetIn.Denom, item.AmountIn),
+				Debt:                   sdk.NewCoin(assetOut.Denom, item.AmountOut),
 				CollateralizationRatio: collateralizationRatio,
 			}
 
@@ -87,7 +91,7 @@ func (q *queryServer) QueryVaults(c context.Context, req *types.QueryVaultsReque
 	}
 
 	return &types.QueryVaultsResponse{
-		VaultsInfo:   items,
+		VaultsInfo: items,
 		Pagination: pagination,
 	}, nil
 }
@@ -127,11 +131,11 @@ func (q *queryServer) QueryVault(c context.Context, req *types.QueryVaultRequest
 	}
 	return &types.QueryVaultResponse{
 		VaultInfo: types.VaultInfo{
-			Id:                    vault.ID,
-			PairID:                vault.PairID,
-			Owner:                 vault.Owner,
-			Collateral:            sdk.NewCoin(assetIn.Denom, vault.AmountIn),
-			Debt:                  sdk.NewCoin(assetOut.Denom, vault.AmountOut),
+			Id:                     vault.ID,
+			PairID:                 vault.PairID,
+			Owner:                  vault.Owner,
+			Collateral:             sdk.NewCoin(assetIn.Denom, vault.AmountIn),
+			Debt:                   sdk.NewCoin(assetOut.Denom, vault.AmountOut),
 			CollateralizationRatio: collateralizationRatio,
 		},
 	}, nil
