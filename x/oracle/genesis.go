@@ -1,20 +1,33 @@
 package oracle
 
 import (
+	"fmt"
+	
 	sdk "github.com/cosmos/cosmos-sdk/types"
-
+	
 	"github.com/comdex-official/comdex/x/oracle/keeper"
 	"github.com/comdex-official/comdex/x/oracle/types"
 )
 
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, state *types.GenesisState) {
-
+	
 	for _, item := range state.Markets {
 		k.SetMarket(ctx, item)
 	}
 
 	k.SetParams(ctx, state.Params)
-
+	
+	portId:= k.IBCPort(ctx)
+	
+	if !k.IsBound(ctx, portId) {
+		
+		fmt.Println("x/oracle/genesis.go : in not bounded ==========================>",portId)
+		
+		err := k.BindPort(ctx, portId)
+		if err != nil {
+			panic("could not claim port capability: " + err.Error())
+		}
+	}
 }
 
 func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
