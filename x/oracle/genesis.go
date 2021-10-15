@@ -21,8 +21,6 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, state *types.GenesisState) {
 	
 	if !k.IsBound(ctx, portId) {
 		
-		fmt.Println("x/oracle/genesis.go : in not bounded ==========================>",portId)
-		
 		err := k.BindPort(ctx, portId)
 		if err != nil {
 			panic("could not claim port capability: " + err.Error())
